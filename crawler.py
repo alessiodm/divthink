@@ -1,3 +1,12 @@
+import sys
+from pprint import pprint
+from collections import deque
+import urllib
+import urlparse
+import json
+import random
+from lxml import html
+
 def crawl(url):
     tocrawl = set([url])
     crawled = set([])
@@ -56,15 +65,6 @@ def get_term(content):
 
     return "_no_term_"
 
-import sys
-from pprint import pprint
-from collections import deque
-import urllib
-import urlparse
-import json
-import random
-from lxml import html
-
 def get_google_results(searchfor):
     query = urllib.urlencode({'q': searchfor})
     url = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&%s' % query
@@ -100,4 +100,3 @@ def get_terms(search_content):
     #    raise err
 
 
-    
