@@ -1,5 +1,6 @@
 import sys
-import pprint
+from pprint import pprint
+from collections import deque
 import re
 import urllib
 import urlparse
@@ -7,13 +8,12 @@ import json
 import random
 from lxml import html
 
+from flask import Flask
+from flask import render_template
+
 def crawl(url):
     tocrawl = set([url])
     crawled = set([])
-    #linkregex = re.compile('<a\s(?:.*?\s)*?href=[\'"](.*?)[\'"].*?>')
-    linkregex = re.compile('<a\s(?:.*?\s)*?href=[\'"](.*?)[\'"].*?>')
-    #linkregex = re.compile('href=[\'"](.*?)[\'"].*?>')
-    #keywordregex = re.compile('<meta\sname=["\']keywords["\']\scontent=["\'](.*?)["\']\s/>')
     depth = random.randint(1, 10)
     response = ""
 
@@ -31,26 +31,18 @@ def crawl(url):
             print "Error opening url: " + crawling
             continue
         msg = response.read()
-        # Get site title
-        """
-        startPos = msg.find('<title>')
-        if startPos != -1:
-            endPos = msg.find('</title>', startPos+7)
-            if endPos != -1:
-                title = msg[startPos+7:endPos]
-                #print title
-        """
-        # Get site keywords
-        """
-        keywordlist = keywordregex.findall(msg)
-        if len(keywordlist) > 0:
-            keywordlist = keywordlist[0]
-            keywordlist = keywordlist.split(", ")
-            print keywordlist
-        """
-        links = linkregex.findall(msg)
+
+        # TODO: Get site title
+        # TODO: Get site keywords
+        links = html.fromstring(msg).xpath('//a')
         crawled.add(crawling)
-        for link in (links.pop(0) for _ in xrange(len(links))):
+        #for link in (links.popleft() for _ in xrange(len(links))):
+        for link in (links.pop(0) for _ in xrange(len(links))): # Go only for first link...
+            if 'href' in link.attrib:
+                link = link.attrib['href'] 
+            else:
+                continue
+
             if link.startswith('/'):
                 link = 'http://' + url[1] + link
             elif link.startswith('#'):
@@ -59,18 +51,23 @@ def crawl(url):
                 link = 'http://' + url[1] + '/' + link
             if link not in crawled:
                 tocrawl.add(link)
+    #return { 'crawled': [ x for x in crawled ], 'msg': msg }
     return msg
 
 def get_term(content):
     try:
         tree = html.fromstring(content)  
-        for word in tree.xpath('//p')[0].text.split():
-            if len(word) > 4:
-                return word
-    except:
-        return "ErrorTerm"
+        paragraphs = tree.xpath('//p')
+        if paragraphs:
+            for par in paragraphs:
+                for word in par.text.split():
+                    if len(word) > random.randint(4, 7):
+                        return word
+    except Exception, err:
+        sys.stderr.write('ERROR: %s\n' % str(err))
+        return "_err_term_"
 
-    return "NoTerm"
+    return "_no_term_"
 
 
 def get_google_results(searchfor):
@@ -80,20 +77,46 @@ def get_google_results(searchfor):
     j = json.load(search_response)
     return [url['url'] for url in j['responseData']['results']]
 
-divterms = []
+def get_terms():
+    divterms = []
+    #try:
+    # Get a bunch of keywords
+    search_content = raw_input('Please, insert terms you would like to diverge: ')
 
-# Get a bunch of keywords
-search_content = raw_input('Please, insert terms you would like to diverge: ')
+    # Search them on google and get links
+    urls_to_crawl = get_google_results(search_content)
+    #print urls_to_crawl
 
-# Search them on google and get links
-urls_to_crawl = get_google_results(search_content)
-#print urls_to_crawl
+    # go in depth following links in those pages
+    crawled_paths = []
+    for url in urls_to_crawl:
+        content = crawl(url)
+        new_term = get_term(content)
+        # Find some words longer than 4-5 characters
+        if new_term not in divterms:
+            if new_term not in ['_no_term_', '_err_term_']:
+                divterms.append(new_term)
 
-# go in depth following links in those pages
-for url in urls_to_crawl:
-    content = crawl(url)
-    # Find some words longer than 4-5 characters
-    divterms.append(get_term(content))
+    return json.dumps({"crawled_paths": crawled_paths, "divterms": divterms})
+    #except Exception, err:
+    #    sys.stderr.write('ERROR: %s\n' % str(err))
+    #    raise err
 
-print divterms
+# ==== Flask part ==== #
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('main.html')
+
+@app.route('/diverge', methods=['POST'])
+def diverge():
+    search_string = request.form['search_string']
+    secret = request.form['secret']
+    if secret != 'D1verg3nt!':
+        return json.dumps({ "error": "Wrong secret" })
+
+if __name__ == '__main__':
+    #app.run()
+    print get_terms()
 
