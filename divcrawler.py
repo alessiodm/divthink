@@ -51,7 +51,7 @@ def crawl(url):
                 link = 'http://' + url[1] + '/' + link
             if link not in crawled:
                 tocrawl.add(link)
-    #return { 'crawled': [ x for x in crawled ], 'msg': msg }
+    return { 'crawled': [ x for x in crawled ], 'msg': msg }
     return msg
 
 def get_term(content):
@@ -91,7 +91,7 @@ def get_terms():
     crawled_paths = []
     for url in urls_to_crawl:
         content = crawl(url)
-        new_term = get_term(content)
+        new_term = get_term(content['msg'])
         # Find some words longer than 4-5 characters
         if new_term not in divterms:
             if new_term not in ['_no_term_', '_err_term_']:
