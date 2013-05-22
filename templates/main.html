@@ -2,8 +2,18 @@
 <html>
   <head>
     <title>Divergent Thinking Tool</title>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/static/script.js"></script>
   </head>
   <body>
     <h1>Let's diverge!</h1>
+    <form action="/diverge" id="searchForm">
+      <input type="text" name="search_string" placeholder="Divergent Search..." />
+      <input type="text" name="secret" placeholder="Secret..." />
+      <input type="submit" value="Fire!" />
+    </form>
+    
+    <div id="result"></div>
   </body>
 </html>

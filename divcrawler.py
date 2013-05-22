@@ -9,6 +9,7 @@ import random
 from lxml import html
 
 from flask import Flask
+from flask import request
 from flask import render_template
 
 def crawl(url):
@@ -51,7 +52,7 @@ def crawl(url):
                 link = 'http://' + url[1] + '/' + link
             if link not in crawled:
                 tocrawl.add(link)
-    return { 'crawled': [ x for x in crawled ], 'msg': msg }
+    return { 'crawled': list(crawled), 'msg': msg }
     return msg
 
 def get_term(content):
@@ -77,11 +78,11 @@ def get_google_results(searchfor):
     j = json.load(search_response)
     return [url['url'] for url in j['responseData']['results']]
 
-def get_terms():
+def get_terms(search_content):
     divterms = []
     #try:
     # Get a bunch of keywords
-    search_content = raw_input('Please, insert terms you would like to diverge: ')
+    #search_content = raw_input('Please, insert terms you would like to diverge: ')
 
     # Search them on google and get links
     urls_to_crawl = get_google_results(search_content)
@@ -92,12 +93,14 @@ def get_terms():
     for url in urls_to_crawl:
         content = crawl(url)
         new_term = get_term(content['msg'])
+        crawled_paths.append(content['crawled'])
         # Find some words longer than 4-5 characters
         if new_term not in divterms:
             if new_term not in ['_no_term_', '_err_term_']:
                 divterms.append(new_term)
 
-    return json.dumps({"crawled_paths": crawled_paths, "divterms": divterms})
+    result = { 'crawled_paths': crawled_paths, 'divterms': divterms}
+    return result
     #except Exception, err:
     #    sys.stderr.write('ERROR: %s\n' % str(err))
     #    raise err
@@ -113,10 +116,12 @@ def index():
 def diverge():
     search_string = request.form['search_string']
     secret = request.form['secret']
-    if secret != 'D1verg3nt!':
-        return json.dumps({ "error": "Wrong secret" })
+    #if secret != 'D1verg3nt!':
+    #    return json.dumps({ "error": "Wrong secret" })
+    results = get_terms(search_string)
+    return json.dumps(results)
 
 if __name__ == '__main__':
-    #app.run()
-    print get_terms()
+    app.debug = True
+    app.run()
 
