@@ -7,39 +7,37 @@ import json
 import random
 from lxml import html
 
-def crawl(url):
-    tocrawl = set([url])
-    crawled = set([])
-    depth = random.randint(1, 10)
-    response = ""
+def create_node(name, children):
+    return { "name": name, "children": children }
 
-    while depth > 0:
+def crawl(addr):
+    current = create_node(addr, [])
+    root = current
+    depth = random.randint(1, 5)
+    page_content = ""
+    crawled = [] # Not crawl same url twice
+
+    to_crawl = addr
+    for i in range(depth):
+        remain = depth - i - 1
+        print "Crawling: " + to_crawl + " - Remains: " + str(remain)
+        url = urlparse.urlparse(to_crawl)
         try:
-            crawling = tocrawl.pop()
-            print "Crawling: " + crawling + " - Remains: " + str(depth)
-        except KeyError:
-            print "KeyError..."
-            return { 'crawled': list(crawled), 'msg': "" }
-        url = urlparse.urlparse(crawling)
-        try:
-            response = urllib.urlopen(crawling)
-            depth -= 1
+            response = urllib.urlopen(to_crawl)
         except:
-            print "Error opening url: " + crawling
-            continue
-        msg = response.read()
+            print "Error opening url: " + to_crawl
+            break
 
-        # TODO: Get site title
-        # TODO: Get site keywords
-        links = html.fromstring(msg).xpath('//a')
-        crawled.add(crawling)
-        #for link in (links.popleft() for _ in xrange(len(links))):
-        for link in (links.pop(0) for _ in xrange(len(links))): # Go only for first link...
+        crawled.append(to_crawl)
+        page_content = response.read()
+        raw_links = html.fromstring(page_content).xpath('//a')
+        full_links = []
+        
+        for link in (raw_links.pop(0) for _ in xrange(len(raw_links))):
             if 'href' in link.attrib:
                 link = link.attrib['href'] 
             else:
                 continue
-
             if link.startswith('/'):
                 link = 'http://' + url[1] + link
             elif link.startswith('#'):
@@ -47,8 +45,21 @@ def crawl(url):
             elif not link.startswith('http'):
                 link = 'http://' + url[1] + '/' + link
             if link not in crawled:
-                tocrawl.add(link)
-    return { 'crawled': list(crawled), 'msg': msg }
+                full_links.append(link)
+
+        if not full_links: # no link crawlable
+            break
+
+        for link in full_links:
+            current["children"].append(create_node(link, []))
+
+        rand_link = random.randint(0, len(full_links)) - 1
+        print "selected " + str(rand_link + 1) + " of " + str(len(full_links))
+        current = current["children"][rand_link]
+        to_crawl = current["name"]
+
+    return { 'crawled': root, 'page_content': page_content }
+
 
 def get_term(content):
     try:
@@ -86,7 +97,7 @@ def get_terms(search_content):
     crawled_paths = []
     for url in urls_to_crawl:
         content = crawl(url)
-        new_term = get_term(content['msg'])
+        new_term = get_term(content['page_content'])
         crawled_paths.append(content['crawled'])
         # Find some words longer than 4-5 characters
         if new_term not in divterms:
