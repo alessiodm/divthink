@@ -18,7 +18,8 @@ def crawl(url):
             crawling = tocrawl.pop()
             print "Crawling: " + crawling + " - Remains: " + str(depth)
         except KeyError:
-            return response
+            print "KeyError..."
+            return { 'crawled': list(crawled), 'msg': "" }
         url = urlparse.urlparse(crawling)
         try:
             response = urllib.urlopen(crawling)
@@ -48,7 +49,6 @@ def crawl(url):
             if link not in crawled:
                 tocrawl.add(link)
     return { 'crawled': list(crawled), 'msg': msg }
-    return msg
 
 def get_term(content):
     try:
