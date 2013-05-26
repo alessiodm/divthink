@@ -10,13 +10,6 @@ jQuery(document).ready(function($){
       return [d.y, d.x];
   });
 
-  var svg = d3.select("body").append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .append("g")
-      .attr("transform", "translate(40,0)");
-
-
   $("#searchForm").submit(function(event) {
     event.preventDefault();
     var $form = $( this ),
@@ -26,9 +19,16 @@ jQuery(document).ready(function($){
     
     var posting = $.post( url, { search_string: str, secret: s3cret } );
     
+    d3.select("svg").remove();
+    var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+      .attr("transform", "translate(40,0)");
+
     posting.done(function( data ) {
       $( "#result" ).empty().append( data );
-
+      
       data = JSON.parse(data);
       var nodes = cluster.nodes(data["crawled_paths"][0]),
           links = cluster.links(nodes);
@@ -56,6 +56,11 @@ jQuery(document).ready(function($){
           })
           .attr("dy", function (d){
               return d.children ? -20 : 3;
+          })
+          .style("display", function(d){
+            if (d.children.length == 0)
+              return "none"
+            else return "inline";
           })
           .style("text-anchor", function (d) {
               return d.children ? "end" : "start";
