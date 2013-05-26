@@ -2,7 +2,7 @@ jQuery(document).ready(function($){
 
   var width = 800, height = 600;
 
-  var cluster = d3.layout.cluster()
+  var cluster = d3.layout.tree()
       .size([height, width - 160]);
 
   var diagonal = d3.svg.diagonal()
