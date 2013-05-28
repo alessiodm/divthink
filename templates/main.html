@@ -16,15 +16,23 @@
           <h2>A tool for divergent thinking...</h2>
         </hgroup>
       </header>
+      <article>
+        <p>This is a small tool for...</p>
+      </article>
       <section>
         <div>
           <form action="/diverge" id="searchForm">
-            <input type="text" name="search_string" placeholder="Divergent Search..." />
+            <input type="text" name="search_string" placeholder="Divergent Search Terms..." />
             <input type="password" name="secret" placeholder="Secret..." />
             <input type="submit" value="Fire!" />
           </form>
         </div>
-        <div id="tree"><p id="aaa">Click on any node to select its link...</p></div>
+        <div id="tree">
+          <div id="output">
+            <p id="terms"><span>Search output: </span><span></span></p>
+            <p id="aaa"><span>Last selected node: </span><span>Click on any node of the graph to select its link...</span></p>
+          </div>
+        </div>
         <div id="result"></div>
       </section>
       <footer>

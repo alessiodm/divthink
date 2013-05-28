@@ -1,7 +1,20 @@
 /* Eric Meyer's Reset */
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
 
+body {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  background: rgb(245,246,246); /* Old browsers */
+  background: -moz-linear-gradient(left, rgba(245,246,246,1) 0%, rgba(219,220,226,1) 21%, rgba(184,186,198,1) 49%, rgba(221,223,227,1) 80%, rgba(245,246,246,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(245,246,246,1)), color-stop(21%,rgba(219,220,226,1)), color-stop(49%,rgba(184,186,198,1)), color-stop(80%,rgba(221,223,227,1)), color-stop(100%,rgba(245,246,246,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 21%,rgba(184,186,198,1) 49%,rgba(221,223,227,1) 80%,rgba(245,246,246,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 21%,rgba(184,186,198,1) 49%,rgba(221,223,227,1) 80%,rgba(245,246,246,1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 21%,rgba(184,186,198,1) 49%,rgba(221,223,227,1) 80%,rgba(245,246,246,1) 100%); /* IE10+ */
+  background: linear-gradient(to right, rgba(245,246,246,1) 0%,rgba(219,220,226,1) 21%,rgba(184,186,198,1) 49%,rgba(221,223,227,1) 80%,rgba(245,246,246,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#f5f6f6',GradientType=1 ); /* IE6-9 */
+}
+
 header {
+  padding-top: 10px;
   margin-bottom: 10px;
 }
 
@@ -9,25 +22,34 @@ header h1 {
   display:block;
   font-size: xx-large;
   font-weight: bold;
-  padding: 5px;
+  padding: 2px;
 }
 
 header h2 {
   display:block;
   font-size: x-large;
-  font-weight: bold;
-  padding: 5px;
+  /*font-weight: bold;*/
+  font-style: italic;
+  padding: 2px;
+}
+
+article {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 #container{
   width: 700px;
-  background-color: #eee;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 45px;
+  margin-bottom: 45px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-
+  border-radius: 5px;
+  background-color: #eee;
+  -webkit-box-shadow: 0px 0px 21px rgba(50, 50, 50, 0.87);
+  -moz-box-shadow:    0px 0px 21px rgba(50, 50, 50, 0.87);
+  box-shadow:         0px 0px 21px rgba(50, 50, 50, 0.87);
 }
 
 form input{
@@ -42,16 +64,25 @@ form input{
 form input[type=submit]{
   height: 38px;
   width: 70px;
-  background-color: #080;
+  background-color: #999;
 }
 
 form input[type=submit]:hover{
-  background-color: #0a0;
+  background-color: #BBB;
   cursor: pointer;
 }
 
-#aaa{
+#output p {
   display: block;
+  padding-bottom: 10px;
+  font-size: small;
+}
+
+#aaa span:nth-child(2){
+  font-style: italic;
+}
+
+#terms span:nth-child(2){
   font-style: italic;
 }
 
@@ -67,11 +98,11 @@ form input[type=submit]:hover{
   margin-right: 10px;
   padding: 10px;
   min-height: 200px;
-
+  text-align: left;
 }
 
 footer {
-  font-size: small;
+  font-size: x-small;
   font-style: italic;
   padding: 30px;
 }

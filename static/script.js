@@ -30,6 +30,13 @@ jQuery(document).ready(function($){
       $( "#result" ).empty().append( data );
       
       data = JSON.parse(data);
+      terms = "" + data.divterms.join(", ");
+      if (terms === ""){
+        terms = "<em>No terms found...</em>"
+      }
+
+      $("#terms span:nth-child(2)").html(terms);
+
       var nodes = cluster.nodes(data["crawled_paths"]),
           links = cluster.links(nodes);
 
@@ -85,7 +92,7 @@ jQuery(document).ready(function($){
               .remove();
         })
         .on("click", function(d){
-          $("#aaa").html(d3.select(this.parentNode).selectAll("text").text());
+          $("#aaa span:nth-child(2)").html(d3.select(this.parentNode).selectAll("text").text());
         });
 
       function getNodeColor(d){
