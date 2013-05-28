@@ -7,7 +7,7 @@ jQuery(document).ready(function($){
 
   var diagonal = d3.svg.diagonal()
       .projection(function (d) {
-      return [d.y, d.x];
+      return [d.x, d.y];
   });
 
   $("#searchForm").submit(function(event) {
@@ -44,7 +44,7 @@ jQuery(document).ready(function($){
           .enter().append("g")
           .attr("class", "node")
           .attr("transform", function (d) {
-              return "translate(" + d.y + "," + d.x + ")";
+              return "translate(" + d.x + "," + d.y + ")";
           });
 
       node.append("circle")
