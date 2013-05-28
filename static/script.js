@@ -48,26 +48,49 @@ jQuery(document).ready(function($){
           });
 
       node.append("circle")
-          .attr("r", 10);
+        .attr("r", 10)
+        .style("fill", function(d){
+            return getNodeColor(d);
+        })
+        .on("mouseover", function() {
+          d3.select(this)
+              .transition()
+              .duration(150)
+              .attr("r", 15)
+              .style("fill", "#FF9900");
+         d3.select(this.parentNode)
+              .append("text")
+                .attr("dx", function (d) {
+                    return d.children ? 8 : 25;
+                })
+                .attr("dy", function (d){
+                    return d.children ? -20 : 3;
+                })
+                .style("text-anchor", function (d) {
+                    return d.children ? "end" : "start";
+                })
+                .text(function (d) {
+                    return d.name;
+                });
+        })
+        .on("mouseout",  function(d) {
+          var color = getNodeColor(d);
+          d3.select(this)
+              .transition()
+              .duration(150)
+              .attr("r", 10)
+              .style("fill", color);
+          d3.select(this.parentNode).selectAll("text")
+              .remove();
+        });
 
-      node.append("text")
-          .attr("dx", function (d) {
-              return d.children ? 8 : 15;
-          })
-          .attr("dy", function (d){
-              return d.children ? -20 : 3;
-          })
-          .style("display", function(d){
-            if (d.children.length == 0)
-              return "none"
-            else return "inline";
-          })
-          .style("text-anchor", function (d) {
-              return d.children ? "end" : "start";
-          })
-          .text(function (d) {
-              return d.name;
-          });
+      function getNodeColor(d){
+          return isVisited(d) ? "#a00" : "#eee";
+      }
+
+      function isVisited(d){
+         return d.visited || (d.children !== undefined && d.children.length > 0)
+      }
 
     }); // post done
 

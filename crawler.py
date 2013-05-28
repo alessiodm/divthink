@@ -55,6 +55,7 @@ def crawl(addr):
 
         rand_link = random.randint(0, len(full_links)) - 1
         print "selected " + str(rand_link + 1) + " of " + str(len(full_links))
+        current["children"][rand_link]["visited"] = True
         current = current["children"][rand_link]
         to_crawl = current["name"]
 
