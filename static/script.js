@@ -3,7 +3,7 @@ jQuery(document).ready(function($){
   var width = 800, height = 600;
 
   var cluster = d3.layout.tree()
-      .size([height, width - 160]);
+      .size([width - 160, height - 160]);
 
   var diagonal = d3.svg.diagonal()
       .projection(function (d) {
@@ -24,7 +24,7 @@ jQuery(document).ready(function($){
       .attr("width", width)
       .attr("height", height)
       .append("g")
-      .attr("transform", "translate(40,0)");
+      .attr("transform", "translate(0,40)");
 
     posting.done(function( data ) {
       $( "#result" ).empty().append( data );
@@ -59,16 +59,11 @@ jQuery(document).ready(function($){
               .attr("r", 15)
               .style("fill", "#FF9900");
          d3.select(this.parentNode)
-              .append("text")
+              .append("text")/*
                 .attr("dx", function (d) {
                     return d.children ? 8 : 25;
-                })
-                .attr("dy", function (d){
-                    return d.children ? -20 : 3;
-                })
-                .style("text-anchor", function (d) {
-                    return d.children ? "end" : "start";
-                })
+                })*/
+                .attr("dy", -20)
                 .text(function (d) {
                     return d.name;
                 });
