@@ -79,6 +79,9 @@ jQuery(document).ready(function($){
               .style("fill", color);
           d3.select(this.parentNode).selectAll("text")
               .remove();
+        })
+        .on("click", function(d){
+          $("#aaa").html(d3.select(this.parentNode).selectAll("text").text());
         });
 
       function getNodeColor(d){
