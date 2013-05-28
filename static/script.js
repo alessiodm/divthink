@@ -1,9 +1,9 @@
 jQuery(document).ready(function($){
 
-  var width = 800, height = 600;
+  var width = 700, height = 500;
 
   var cluster = d3.layout.tree()
-      .size([width - 160, height - 160]);
+      .size([width - 160, height - 100]);
 
   var diagonal = d3.svg.diagonal()
       .projection(function (d) {
@@ -20,11 +20,11 @@ jQuery(document).ready(function($){
     var posting = $.post( url, { search_string: str, secret: s3cret } );
     
     d3.select("svg").remove();
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#tree").append("svg")
       .attr("width", width)
       .attr("height", height)
       .append("g")
-      .attr("transform", "translate(40,40)");
+      .attr("transform", "translate(80,40)");
 
     posting.done(function( data ) {
       $( "#result" ).empty().append( data );
@@ -44,7 +44,11 @@ jQuery(document).ready(function($){
           .enter().append("g")
           .attr("class", "node")
           .attr("transform", function (d) {
-              return "translate(" + d.x + "," + d.y + ")";
+              dy = d.y;
+              if (isVisited(d)){
+                dy += 5;
+              }
+              return "translate(" + d.x + "," + dy + ")";
           });
 
       node.append("circle")
@@ -55,7 +59,7 @@ jQuery(document).ready(function($){
         .on("mouseover", function() {
           d3.select(this)
               .transition()
-              .duration(150)
+              .duration(100)
               .attr("r", 15)
               .style("fill", function(d){
                 return isVisited(d) ? "#a00" : "#FF9900"
@@ -74,7 +78,7 @@ jQuery(document).ready(function($){
           var color = getNodeColor(d);
           d3.select(this)
               .transition()
-              .duration(150)
+              .duration(100)
               .attr("r", 10)
               .style("fill", color);
           d3.select(this.parentNode).selectAll("text")

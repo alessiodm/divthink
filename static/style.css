@@ -1,14 +1,66 @@
+#container{
+  width: 700px;
+  background-color: #eee;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+form input{
+  border: 1px solid #777;
+  border-radius: 3px;
+  padding-left: 5px;
+  display: inline;
+  height: 35px;
+  width: 170px;
+}
+
+form input[type=submit]{
+  height: 38px;
+  width: 70px;
+  background-color: #080;
+}
+
+form input[type=submit]:hover{
+  background-color: #0a0;
+}
+
+#aaa{
+  display: block;
+  font-style: italic;
+}
+
+#tree{
+  background-color: white;
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 7px;
+  margin: 10px;
+  padding: 0;
+  min-height: 200px;
+
+}
+
+footer {
+  font-size: small;
+  font-style: italic;
+}
+
 #result{
   display: none;
 }
 
+/* SVG elements */
 .node circle {
     stroke: black;
     stroke-width: 1px;
 }
+
 .node {
     font: 10px sans-serif;
 }
+
 .link {
     fill: none;
     stroke: #ccc;
