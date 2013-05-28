@@ -95,11 +95,11 @@ def get_terms(search_content):
     #print urls_to_crawl
 
     # go in depth following links in those pages
-    crawled_paths = []
+    crawled_paths = { "name": search_content, "children": [] }
     for url in urls_to_crawl:
         content = crawl(url)
         new_term = get_term(content['page_content'])
-        crawled_paths.append(content['crawled'])
+        crawled_paths["children"].append(content['crawled'])
         # Find some words longer than 4-5 characters
         if new_term not in divterms:
             if new_term not in ['_no_term_', '_err_term_']:

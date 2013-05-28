@@ -24,13 +24,13 @@ jQuery(document).ready(function($){
       .attr("width", width)
       .attr("height", height)
       .append("g")
-      .attr("transform", "translate(0,40)");
+      .attr("transform", "translate(40,40)");
 
     posting.done(function( data ) {
       $( "#result" ).empty().append( data );
       
       data = JSON.parse(data);
-      var nodes = cluster.nodes(data["crawled_paths"][0]),
+      var nodes = cluster.nodes(data["crawled_paths"]),
           links = cluster.links(nodes);
 
       var link = svg.selectAll(".link")
@@ -57,7 +57,9 @@ jQuery(document).ready(function($){
               .transition()
               .duration(150)
               .attr("r", 15)
-              .style("fill", "#FF9900");
+              .style("fill", function(d){
+                return isVisited(d) ? "#a00" : "#FF9900"
+              });
          d3.select(this.parentNode)
               .append("text")/*
                 .attr("dx", function (d) {
