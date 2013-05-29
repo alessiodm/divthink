@@ -26,5 +26,7 @@ def diverge():
 if __name__ == '__main__':
     app.debug = True
     app.config['s3cret'] = os.getenv('SECRET', 's3cret')
-    app.run()
+    host = '0.0.0.0'
+    port = int(os.getenv('PORT', '8000'))
+    app.run(host, port)
 
