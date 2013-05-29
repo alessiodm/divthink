@@ -1,0 +1,7 @@
+Flask==0.9
+Jinja2==2.7
+httplib2==0.7.4
+lxml==2.3.5
+simplejson==2.6.1
+Werkzeug==0.8.3
+gunicorn==0.17.2
