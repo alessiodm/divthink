@@ -3,7 +3,7 @@ DivThink!
 
 __DivThink!__ is a tiny tool for divergent thinking. A little crawler starts exploring the network looking for some divergent terms.
 
-![Graph](https://raw.github.com/alessiodm/divthink/master/docs/divthink.jpg)
+![Graph](https://raw.github.com/alessiodm/divthink/master/docs/divthink.png)
 
 ## Give It a Try
 
