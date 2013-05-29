@@ -10,7 +10,7 @@ __DivThink!__ is a tiny tool for divergent thinking. A little crawler starts exp
 You need Python and *lxml* and *Flask* eggs. 
 Then you can simply run: `SECRET=s3cret python divcrawler.py`
 
-## Implementations details
+## Implementation details
 
 Given some Google search results, a little crawler starts exploring the network and stops randomly on some words. There are lots of different extension and improvement that can be done. 
 
