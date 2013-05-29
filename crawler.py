@@ -86,6 +86,7 @@ def get_google_results(searchfor):
 
 def get_terms(search_content):
     divterms = []
+    contents = []
     #try:
     # Get a bunch of keywords
     #search_content = raw_input('Please, insert terms you would like to diverge: ')
@@ -98,6 +99,7 @@ def get_terms(search_content):
     crawled_paths = { "name": search_content, "children": [] }
     for url in urls_to_crawl:
         content = crawl(url)
+        #print content['page_content']
         new_term = get_term(content['page_content'])
         crawled_paths["children"].append(content['crawled'])
         # Find some words longer than 4-5 characters
@@ -105,7 +107,7 @@ def get_terms(search_content):
             if new_term not in ['_no_term_', '_err_term_']:
                 divterms.append(new_term)
 
-    result = { 'crawled_paths': crawled_paths, 'divterms': divterms}
+    result = { 'crawled_paths': crawled_paths, 'divterms': divterms }
     return result
     #except Exception, err:
     #    sys.stderr.write('ERROR: %s\n' % str(err))

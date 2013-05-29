@@ -19,20 +19,29 @@ jQuery(document).ready(function($){
     
     var posting = $.post( url, { search_string: str, secret: s3cret } );
     
-    d3.select("svg").remove();
-    var svg = d3.select("#tree").append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .append("g")
-      .attr("transform", "translate(80,40)");
+    $(".animated").css('visibility', 'visible');
+
+    posting.fail(function(xhr, textStatus, errorThrown) {
+        $(".animated").css('visibility', 'hidden');
+        msg = "<em style='color:red;'>Error: " + errorThrown + "</em>"
+        $("#terms span:nth-child(2)").html(msg);
+    });
 
     posting.done(function( data ) {
       $( "#result" ).empty().append( data );
-      
+      $(".animated").css('visibility', 'hidden');
+
+      d3.select("svg").remove();
+      var svg = d3.select("#tree").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(80,40)");
+
       data = JSON.parse(data);
       terms = "" + data.divterms.join(", ");
       if (terms === ""){
-        terms = "<em>No terms found...</em>"
+        terms = "<em style='color: green;'>No terms found...</em>"
       }
 
       $("#terms span:nth-child(2)").html(terms);
