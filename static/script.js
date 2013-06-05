@@ -13,26 +13,43 @@ jQuery(document).ready(function($){
   $("#searchForm").submit(function(event) {
     event.preventDefault();
     var $form = $( this ),
-    str = $form.find( 'input[name="search_string"]' ).val(),
-    s3cret = $form.find( 'input[name="secret"]' ).val(),
-    url = $form.attr( 'action' );
+        str = $form.find( 'input[name="search_string"]' ).val(),
+        s3cret = $form.find( 'input[name="secret"]' ).val(),
+        url = $form.attr( 'action' );
     
     var posting = $.post( url, { search_string: str, secret: s3cret } );
     
-    d3.select("svg").remove();
-    var svg = d3.select("#tree").append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .append("g")
-      .attr("transform", "translate(80,40)");
+    $(".animated").css('visibility', 'visible');
+
+    posting.fail(function(xhr, textStatus, errorThrown) {
+        $(".animated").css('visibility', 'hidden');
+        msg = "<em style='color:red;'>Error: " + errorThrown + "</em>";
+        $("#terms span:nth-child(2)").html(msg);
+    });
 
     posting.done(function( data ) {
       $( "#result" ).empty().append( data );
       
       data = JSON.parse(data);
+
+      $(".animated").css('visibility', 'hidden');
+
+      if (data.error !== undefined){
+        msg = "<em style='color:red;'>Error: " + data.error + "</em>";
+        $("#terms span:nth-child(2)").html(msg);
+        return;
+      }
+
+      d3.select("svg").remove();
+      var svg = d3.select("#tree").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(80,40)");
+
       terms = "" + data.divterms.join(", ");
       if (terms === ""){
-        terms = "<em>No terms found...</em>"
+        terms = "<em style='color: green;'>No terms found...</em>"
       }
 
       $("#terms span:nth-child(2)").html(terms);

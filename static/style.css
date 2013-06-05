@@ -15,27 +15,28 @@ body {
 
 header {
   padding-top: 10px;
-  margin-bottom: 10px;
 }
 
 header h1 {
   display:block;
-  font-size: xx-large;
+  font-size: 30px;
   font-weight: bold;
   padding: 2px;
 }
 
 header h2 {
   display:block;
-  font-size: x-large;
+  font-size: 25px;
   /*font-weight: bold;*/
   font-style: italic;
   padding: 2px;
 }
 
 article {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 20px;
+  line-height: 25px;
+  text-align: justify;
+  font-size: 14px;
 }
 
 #container{
@@ -50,6 +51,14 @@ article {
   -webkit-box-shadow: 0px 0px 21px rgba(50, 50, 50, 0.87);
   -moz-box-shadow:    0px 0px 21px rgba(50, 50, 50, 0.87);
   box-shadow:         0px 0px 21px rgba(50, 50, 50, 0.87);
+}
+
+em {
+  font-style: italic;
+}
+
+form {
+  margin-bottom: 20px;
 }
 
 form input{
@@ -84,6 +93,7 @@ form input[type=submit]:hover{
 
 #terms span:nth-child(2){
   font-style: italic;
+  font-weight: bold;
 }
 
 #tree{
@@ -125,4 +135,33 @@ footer {
     fill: none;
     stroke: #ccc;
     stroke-width: 1.5px;
+}
+
+@-webkit-keyframes rotate {
+    0% {
+    -webkit-transform: rotate(0deg);
+    }
+    83% { /*2.4 / 2.9 = 0.827*/
+    -webkit-transform: rotate(360deg);
+    }
+    100% {
+    -webkit-transform: rotate(360deg);
+    }
+}
+
+.animated {
+    border-radius: 7px;
+    text-align: center;
+    height: 27px;
+    width: 100px;
+    background-color: rgb(0, 62, 132);
+    color: white;
+    font-size: 15px;
+    padding-top: 7px;
+    visibility: hidden;
+    margin:auto;
+-webkit-animation-name: rotate;
+-webkit-animation-duration: 2.9s;
+-webkit-animation-iteration-count: infinite;
+-webkit-transition-timing-function: ease-in-out;
 }
